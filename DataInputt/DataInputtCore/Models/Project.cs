@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace DataInputt.Models
         public string To { get; set; }
         public bool UntilToday { get; set; }
         public string Description { get; set; }
+
+        [NotMapped]
         public string[] Tasks 
         {
             get { return TasksAsString.Split(',').ToArray(); }
@@ -23,6 +26,7 @@ namespace DataInputt.Models
                 TasksAsString = String.Join(",", value);
             }
         }
+        [NotMapped]
         public string[] Tools 
         {
             get { return ToolsAsString.Split(',').ToArray(); }

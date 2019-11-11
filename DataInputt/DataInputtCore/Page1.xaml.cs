@@ -74,7 +74,7 @@ namespace DataInputt
             listViewKind = new ListView()
             {
                 View = gridViewEnkel,
-                Height = (double) Application.Current.Resources["RandomDouble"],
+                Height = 188, // (double)Application.Current.Resources["RandomDouble"]
                 Margin = new Thickness(0, 23, 0, 0)
             };
             //var y = new List<Medium>

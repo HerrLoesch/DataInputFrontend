@@ -28,8 +28,6 @@ namespace DataInputt
         ItemCollection j = new ListView().Items;
         PublicationData data = new PublicationData();
         private readonly ILog fileLogger;
-        
-        private DataContext _context = new DataContext();
 
         public MainWindow()
         {
@@ -62,7 +60,7 @@ namespace DataInputt
             };
             publikationen.Items.Add(publication1);
             publikationen.Items.Add(publication2);
-
+            Settings.Default.LoggingImpl = "NLogFacade";
             switch (Settings.Default.LoggingImpl)
             {
                 case nameof(NLogFacade):
@@ -805,13 +803,15 @@ namespace DataInputt
 
                 // Init Database for EF
                 if (!db.Publications.Any() && !db.Media.Any() && !db.Publishers.Any() && !db.Projects.Any())
-                    InitEFDb();
+                   InitEFDb();
 
                 // Import Publication
                 // Display all Publications from the database
                 var query = from b in db.Publications
                             orderby b.Id
                             select b;
+                var queryc = db.Publications.OrderBy(b => b.Id).First();
+                Console.WriteLine(queryc.Name);
 
                 Console.WriteLine("Read all Publications in the database...");
                 this.publikationen.Items.Clear();
@@ -869,6 +869,8 @@ namespace DataInputt
         {
             using (var db = new DataContext())
             {
+                db.Database.EnsureCreated();
+
                 var pub = new Publication { Name = "Publikation1", Description = "1. Publication", Date = "10.11.2019", Link = null, Type = "Vortrag", MediumId = 1, Reviewed = false };
                 var pub2 = new Publication { Name = "Publikation2", Description = "2. Publication", Date = "10.11.2019", Link = null, Type = "Vortrag", MediumId = 2, Reviewed = true };
                 db.Publications.Add(pub);
@@ -906,7 +908,9 @@ namespace DataInputt
         {
             using (var db = new DataContext())
             {
-                db.Database.Delete();
+                db.Database.EnsureDeleted();
+                db.Database.EnsureCreated();
+
                 foreach (Publication p in this.publikationen.Items)
                 {
                     //Console.WriteLine(p.Id + " " + p.Name);

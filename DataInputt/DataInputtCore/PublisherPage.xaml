@@ -29,7 +29,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid Background="{Binding Source={StaticResource ApplicationPrimaryColor}, Converter={StaticResource brushConverter}}">
+    <Grid Background="{Binding Converter={StaticResource brushConverter}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
