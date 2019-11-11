@@ -38,9 +38,9 @@ namespace DataInputt
                 }
                 else
                 {
-                        DataInputt.Properties.Settings.Default.ConnectionString = srReader.ReadLine();
-                        DataInputt.Properties.Settings.Default.DBUsername = srReader.ReadLine();
-                        DataInputt.Properties.Settings.Default.DBPassword = srReader.ReadLine();
+                    DataInputt.Properties.Settings.Default.ConnectionString = srReader.ReadLine();
+                    DataInputt.Properties.Settings.Default.DBUsername = srReader.ReadLine();
+                    DataInputt.Properties.Settings.Default.DBPassword = srReader.ReadLine();
                 }
                 //close reader
                 srReader.Close();
@@ -56,7 +56,7 @@ namespace DataInputt
             base.OnExit(e);
             MisterDeleteDB.connection?.Close();
             MisterDeleteDB.connection?.Dispose();
-try
+            try
             {
 
                 //First get the 'user-scoped' storage information location reference in the assembly
@@ -114,7 +114,7 @@ try
                     MisterDeleteDB.connection.Open();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
             }
         }
@@ -128,12 +128,12 @@ try
                 return;
             if (null == DataInputt.Properties.Settings.Default.DBPassword)
                 return;
-            if(x < 2)
+            if (x < 2)
             {
                 x++; return;
             }
             x = 0;
-            if(DataInputt.Properties.Settings.Default.DBUsername == "")
+            if (DataInputt.Properties.Settings.Default.DBUsername == "")
             {
                 try
                 {

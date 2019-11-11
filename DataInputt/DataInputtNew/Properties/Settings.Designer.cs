@@ -8,65 +8,81 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataInputt.Properties {
-    
-    
+namespace DataInputt.Properties
+{
+
+
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.6.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
+    {
+
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-        
-        public static Settings Default {
-            get {
+
+        public static Settings Default
+        {
+            get
+            {
                 return defaultInstance;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DBUsername {
-            get {
+        public string DBUsername
+        {
+            get
+            {
                 return ((string)(this["DBUsername"]));
             }
-            set {
+            set
+            {
                 this["DBUsername"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DBPassword {
-            get {
+        public string DBPassword
+        {
+            get
+            {
                 return ((string)(this["DBPassword"]));
             }
-            set {
+            set
+            {
                 this["DBPassword"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ConnectionString {
-            get {
+        public string ConnectionString
+        {
+            get
+            {
                 return ((string)(this["ConnectionString"]));
             }
-            set {
+            set
+            {
                 this["ConnectionString"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LoggingImpl {
-            get {
+        public string LoggingImpl
+        {
+            get
+            {
                 return ((string)(this["LoggingImpl"]));
             }
-            set {
+            set
+            {
                 this["LoggingImpl"] = value;
             }
         }
