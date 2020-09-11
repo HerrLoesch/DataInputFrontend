@@ -235,6 +235,12 @@
                 </TabItem.Header>
                 <Frame Source="Projects.xaml" />
             </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    Zeiterfassung
+                </TabItem.Header>
+                <Frame Source="Zeiterfassung.xaml" />
+            </TabItem>
         </TabControl>
     </StackPanel>
 </Window>

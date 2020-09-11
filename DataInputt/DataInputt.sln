@@ -4,8 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataInputt", "DataInputt\DataInputt.csproj", "{5E84912A-4948-49FE-BFFF-465A7FDC2C1C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2CB74F1D-6A02-4EB1-BA08-04619E4EE86D} = {2CB74F1D-6A02-4EB1-BA08-04619E4EE86D}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataInputt.Tests", "DataInputt.Tests\DataInputt.Tests.csproj", "{89EB8C2B-A0CE-4301-ADB9-F57F38E4F1F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfServer", "WcfServer\WcfServer.csproj", "{2CB74F1D-6A02-4EB1-BA08-04619E4EE86D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +26,10 @@ Global
 		{89EB8C2B-A0CE-4301-ADB9-F57F38E4F1F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89EB8C2B-A0CE-4301-ADB9-F57F38E4F1F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89EB8C2B-A0CE-4301-ADB9-F57F38E4F1F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CB74F1D-6A02-4EB1-BA08-04619E4EE86D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CB74F1D-6A02-4EB1-BA08-04619E4EE86D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CB74F1D-6A02-4EB1-BA08-04619E4EE86D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CB74F1D-6A02-4EB1-BA08-04619E4EE86D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
