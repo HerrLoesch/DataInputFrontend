@@ -1,20 +1,32 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
+using DataInputt.ZeitService.Api;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using WebApi.Hubs;
 
-namespace WcfServer
+namespace WebApi.Controllers
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Single)]
-    public class DataInputService : IDataInputService
+    [Route("api/zeitservice")]
+    [ApiController]
+    public class ZeitServiceController : ControllerBase
     {
         public static List<InternalUser> Users = new List<InternalUser>();
         public static List<Time> Times = new List<Time>();
 
-        public int CreateUser(User user)
+        private readonly IHubContext<EarningsHub> earningsHubContext;
+        public ZeitServiceController(IHubContext<EarningsHub> earningsHubContext)
+        {
+            this.earningsHubContext = earningsHubContext;
+        }
+
+        [HttpPost("CreateUser")]
+        [ProducesResponseType(typeof(int), 200)]
+        public ActionResult<int> CreateUser(User user)
         {
             var internalUser = new InternalUser(user);
             Users.Add(internalUser);
@@ -22,7 +34,9 @@ namespace WcfServer
             return internalUser.uId;
         }
 
-        public int Login(User user)
+        [HttpPost("Login")]
+        [ProducesResponseType(typeof(int), 200)]
+        public ActionResult<int> Login(User user)
         {
             var internalUsers = Users.FindAll(x => x.Name == user.Name);
             if (internalUsers.Count == 0)
@@ -30,12 +44,12 @@ namespace WcfServer
                 CalculateEarnings();
                 return CreateUser(user);
             }
-                
 
-            foreach(var internalUser in internalUsers)
+
+            foreach (var internalUser in internalUsers)
                 if (user.Passwort == internalUser.Passwort)
                 {
-                 CalculateEarnings();
+                    CalculateEarnings();
                     return internalUser.uId;
                 }
 
@@ -44,12 +58,16 @@ namespace WcfServer
             return CreateUser(user);
         }
 
-        public List<Time> GetTimes(int userId)
+        [HttpGet("Times")]
+        [ProducesResponseType(typeof(List<Time>), 200)]
+        public ActionResult<List<Time>> GetTimes(int userId)
         {
             return Times.FindAll(x => x.uId == userId);
         }
 
-        public void AddTime(Time time, int userId)
+        [HttpPost("AddTime")]
+        [ProducesResponseType(200)]
+        public ActionResult AddTime(Time time, int userId)
         {
             var existingTime = Times.Find(x => x.Id == time.Id);
             if (existingTime == null)
@@ -63,9 +81,13 @@ namespace WcfServer
             }
 
             CalculateEarnings();
+
+            return Ok();
         }
 
-        public List<string> Projects()
+        [HttpGet("Projects")]
+        [ProducesResponseType(typeof(List<string>), 200)]
+        public ActionResult<List<string>> Projects()
         {
             return new List<string> { "Projekt 1", "Projekt 2", "Projekt 3", "Projekt 4", "Projekt 5" };
         }
@@ -73,7 +95,6 @@ namespace WcfServer
         private void CalculateEarnings()
         {
             var result = new ConcurrentDictionary<int, decimal>();
-            var callback = OperationContext.Current.GetCallbackChannel<IDataCallback>();
 
             for (int i = 0; i < Times.Count; i++)
             {
@@ -94,7 +115,7 @@ namespace WcfServer
                     result[u.uId] = result[u.uId] * 120;
             }
 
-            callback.EarningsCalculated(result);
+            Task.Run(async () => await earningsHubContext.Clients.All.SendAsync("EarningsCalculated", result)).GetAwaiter().GetResult();
         }
     }
 

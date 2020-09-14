@@ -1,5 +1,4 @@
-﻿using DataInputt.DataInputServiceReference;
-using DataInputt.Models;
+﻿using DataInputt.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,16 +17,19 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ServiceModel;
 using System.Windows.Threading;
+using DataInputt.ZeitService;
+using DataInputt.ZeitService.Api;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace DataInputt
 {
     /// <summary>
     /// Interaktionslogik für Projects.xaml
-    /// </summary>
-    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Single, UseSynchronizationContext = false)]
-    public partial class Zeiterfassung : Page, IDataInputServiceCallback
+    /// </summary>    
+    public partial class Zeiterfassung : Page
     {
-        private DataInputServiceClient client;
+        private HubConnection connection;
+        private IDataInputService client;
         private Delete delete;
         private int i = 1;
         private int userId = -1;
@@ -39,11 +41,14 @@ namespace DataInputt
         public Zeiterfassung()
         {
             InitializeComponent();
-            client = new DataInputServiceClient(new InstanceContext(this));
+            client = new DataInputService();
             delete = Delete.GetInstance();
             projectsCombo.ItemsSource = client.Projects();
             projectsCombo.SelectedIndex = 0;
 
+            connection = new HubConnectionBuilder().WithUrl("http://localhost:52841/Earnings").Build();
+            connection.On<Dictionary<int, decimal>>("EarningsCalculated", EarningsCalculated);
+            connection.StartAsync();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
