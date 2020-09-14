@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using System.ServiceModel;
 using System.Windows.Threading;
 using DataInputt.ZeitService;
+using DataInputt.ZeitService.Api;
 
 namespace DataInputt
 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataInputt.ZeitService.Api;
+using System;
 using System.Collections.Generic;
 
 namespace DataInputt.ZeitService
@@ -49,18 +50,5 @@ namespace DataInputt.ZeitService
         void EarningsCalculated(IDictionary<int, decimal> earnings);
     }
 
-    public class User
-    {
-        public string Name { get; set; }
-        public string Passwort { get; set; }
-    }
-
-    public class Time
-    {
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
-        public string Project { get; set; }
-        public int uId { get; set; }
-        public int Id { get; set; }
-    }
+    
 }

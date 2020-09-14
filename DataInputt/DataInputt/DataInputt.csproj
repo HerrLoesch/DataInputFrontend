@@ -26,5 +26,8 @@
       <Version>1.0.112</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataInputt.ZeitService.Api\DataInputt.ZeitService.Api.csproj" />
+  </ItemGroup>
   
 </Project>
