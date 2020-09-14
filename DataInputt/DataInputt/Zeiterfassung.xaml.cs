@@ -38,7 +38,7 @@ namespace DataInputt
         public Zeiterfassung()
         {
             InitializeComponent();
-            client = null;
+            client = new DataInputService();
             delete = Delete.GetInstance();
             projectsCombo.ItemsSource = client.Projects();
             projectsCombo.SelectedIndex = 0;
