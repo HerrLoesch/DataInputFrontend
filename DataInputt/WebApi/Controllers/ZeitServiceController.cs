@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
+using DataInputt.ZeitService.Api;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
-namespace WcfServer
+namespace WebApi.Controllers
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Single)]
-    public class DataInputService : IDataInputService
+    [Route("api/zeitservice")]
+    [ApiController]
+    public class ZeitServiceController : ControllerBase
     {
         public static List<InternalUser> Users = new List<InternalUser>();
         public static List<Time> Times = new List<Time>();
 
-        public int CreateUser(User user)
+        [HttpPost("CreateUser")]
+        [ProducesResponseType(typeof(int), 200)]
+        public ActionResult<int> CreateUser(User user)
         {
             var internalUser = new InternalUser(user);
             Users.Add(internalUser);
@@ -22,34 +26,31 @@ namespace WcfServer
             return internalUser.uId;
         }
 
-        public int Login(User user)
+        [HttpPost("Login")]
+        [ProducesResponseType(typeof(int), 200)]
+        public ActionResult<int> Login(User user)
         {
             var internalUsers = Users.FindAll(x => x.Name == user.Name);
-            if (internalUsers.Count == 0)
-            {
-                CalculateEarnings();
+            if (internalUsers.Count == 0)            
                 return CreateUser(user);
-            }
-                
-
-            foreach(var internalUser in internalUsers)
-                if (user.Passwort == internalUser.Passwort)
-                {
-                 CalculateEarnings();
-                    return internalUser.uId;
-                }
-
-            CalculateEarnings();
+            
+            foreach (var internalUser in internalUsers)
+                if (user.Passwort == internalUser.Passwort)                
+                    return internalUser.uId;                
 
             return CreateUser(user);
         }
 
-        public List<Time> GetTimes(int userId)
+        [HttpGet("Times")]
+        [ProducesResponseType(typeof(List<Time>), 200)]
+        public ActionResult<List<Time>> GetTimes(int userId)
         {
             return Times.FindAll(x => x.uId == userId);
         }
 
-        public void AddTime(Time time, int userId)
+        [HttpPost("AddTime")]
+        [ProducesResponseType(200)]
+        public ActionResult AddTime(Time time, int userId)
         {
             var existingTime = Times.Find(x => x.Id == time.Id);
             if (existingTime == null)
@@ -62,18 +63,22 @@ namespace WcfServer
                 Times.Add(time);
             }
 
-            CalculateEarnings();
+            return Ok();
         }
 
-        public List<string> Projects()
+        [HttpGet("Projects")]
+        [ProducesResponseType(typeof(List<string>), 200)]
+        public ActionResult<List<string>> Projects()
         {
             return new List<string> { "Projekt 1", "Projekt 2", "Projekt 3", "Projekt 4", "Projekt 5" };
         }
 
-        private void CalculateEarnings()
+        [HttpGet("CalculateEarnings")]
+        [ProducesResponseType(typeof(decimal), 200)]
+        public decimal CalculateEarnings(int id)
         {
-            var result = new ConcurrentDictionary<int, decimal>();
-            var callback = OperationContext.Current.GetCallbackChannel<IDataCallback>();
+            decimal earning = 0;
+            var result = new ConcurrentDictionary<int, decimal>();            
 
             for (int i = 0; i < Times.Count; i++)
             {
@@ -88,13 +93,12 @@ namespace WcfServer
                 }
             }
 
-            foreach (var u in Users)
+            if (result.ContainsKey(id))
             {
-                if (result.ContainsKey(u.uId))
-                    result[u.uId] = result[u.uId] * 120;
+                earning = result[id] * 120;                
             }
 
-            callback.EarningsCalculated(result);
+            return earning;
         }
     }
 

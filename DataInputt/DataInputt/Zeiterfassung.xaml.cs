@@ -1,5 +1,4 @@
-﻿using DataInputt.DataInputServiceReference;
-using DataInputt.Models;
+﻿using DataInputt.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,16 +17,17 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ServiceModel;
 using System.Windows.Threading;
+using DataInputt.ZeitService;
+using DataInputt.ZeitService.Api;
 
 namespace DataInputt
 {
     /// <summary>
     /// Interaktionslogik für Projects.xaml
-    /// </summary>
-    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Single, UseSynchronizationContext = false)]
-    public partial class Zeiterfassung : Page, IDataInputServiceCallback
+    /// </summary>    
+    public partial class Zeiterfassung : Page
     {
-        private DataInputServiceClient client;
+        private IDataInputService client;
         private Delete delete;
         private int i = 1;
         private int userId = -1;
@@ -39,7 +39,7 @@ namespace DataInputt
         public Zeiterfassung()
         {
             InitializeComponent();
-            client = new DataInputServiceClient(new InstanceContext(this));
+            client = new DataInputService();
             delete = Delete.GetInstance();
             projectsCombo.ItemsSource = client.Projects();
             projectsCombo.SelectedIndex = 0;
@@ -72,6 +72,7 @@ namespace DataInputt
                 timesListView.Items.Add(item);
             }
             TimeRepo.Times = timesList;
+            CalculateEarnings();
         }
 
                                         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -113,7 +114,8 @@ namespace DataInputt
                                             tb1.Text = String.Empty;
                                             projectsCombo.SelectedIndex = 0;
                                             tb5.Text = tb1.Text;
-                                        }
+            CalculateEarnings();
+        }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
@@ -137,12 +139,12 @@ namespace DataInputt
                 timesListView.Items.Add(item);
             }
             TimeRepo.Times = timesList;
+            CalculateEarnings();
         }
 
-        public void EarningsCalculated(Dictionary<int, decimal> earnings)
+        public void CalculateEarnings()
         {
-            var e = earnings.ContainsKey(userId) == true ? earnings[userId].ToString("C") : "0 €";
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => this.earnings.Text = e));
+            earnings.Text = client.CalculateEarnings(userId).ToString("C");
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using DataInputt.Models;
-using System.Data.Entity;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataInputt
 {
@@ -12,6 +13,22 @@ namespace DataInputt
 
         public DataContext()
         {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                var connection = new SqliteConnection("DataSource=:memory:");
+                connection.Open();
+                optionsBuilder.UseSqlite(connection);
+            }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Project>().Ignore(p => p.Tasks);
+            modelBuilder.Entity<Project>().Ignore(p => p.Tools);
         }
     }
 }
