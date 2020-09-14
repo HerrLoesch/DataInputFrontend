@@ -46,12 +46,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataInputt\DataInputt.csproj">
-      <Project>{5E84912A-4948-49FE-BFFF-465A7FDC2C1C}</Project>
-      <Name>DataInputt</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="MSTest.TestAdapter">
       <Version>1.2.0</Version>
     </PackageReference>
