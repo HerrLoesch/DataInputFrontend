@@ -10,39 +10,16 @@ namespace DataInputt.ZeitService
 
         int Login(User user);
 
-        List<Time> GetTimes(int userId);
+        List<Time> GetTimes(int? userId);
 
-        void AddTime(Time time, int userId);
+        void AddTime(Time time, int? userId);
 
         List<string> Projects();
     }
 
-    public class DataInputService : IDataInputService
+    public class DataInputService : ZeitServiceClient, IDataInputService
     {
-        public void AddTime(Time time, int userId)
-        {
-            
-        }
-
-        public int CreateUser(User user)
-        {
-            return 0;
-        }
-
-        public List<Time> GetTimes(int userId)
-        {
-            return new List<Time>();
-        }
-
-        public int Login(User user)
-        {
-            return 0;
-        }
-
-        public List<string> Projects()
-        {
-            return new List<string>();
-        }
+        
     }
 
     public interface IDataCallback

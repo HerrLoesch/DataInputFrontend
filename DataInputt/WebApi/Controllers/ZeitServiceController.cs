@@ -16,7 +16,8 @@ namespace WebApi.Controllers
         public static List<InternalUser> Users = new List<InternalUser>();
         public static List<Time> Times = new List<Time>();
 
-        [HttpPost]
+        [HttpPost("CreateUser")]
+        [ProducesResponseType(typeof(int), 200)]
         public ActionResult<int> CreateUser(User user)
         {
             var internalUser = new InternalUser(user);
@@ -25,7 +26,8 @@ namespace WebApi.Controllers
             return internalUser.uId;
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
+        [ProducesResponseType(typeof(int), 200)]
         public ActionResult<int> Login(User user)
         {
             var internalUsers = Users.FindAll(x => x.Name == user.Name);
@@ -48,13 +50,15 @@ namespace WebApi.Controllers
             return CreateUser(user);
         }
 
-        [HttpGet]
+        [HttpGet("Times")]
+        [ProducesResponseType(typeof(List<Time>), 200)]
         public ActionResult<List<Time>> GetTimes(int userId)
         {
             return Times.FindAll(x => x.uId == userId);
         }
 
-        [HttpPost]
+        [HttpPost("AddTime")]
+        [ProducesResponseType(200)]
         public ActionResult AddTime(Time time, int userId)
         {
             var existingTime = Times.Find(x => x.Id == time.Id);
@@ -73,7 +77,8 @@ namespace WebApi.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpGet("Projects")]
+        [ProducesResponseType(typeof(List<string>), 200)]
         public ActionResult<List<string>> Projects()
         {
             return new List<string> { "Projekt 1", "Projekt 2", "Projekt 3", "Projekt 4", "Projekt 5" };
