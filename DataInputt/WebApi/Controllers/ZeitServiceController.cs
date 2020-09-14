@@ -31,21 +31,12 @@ namespace WebApi.Controllers
         public ActionResult<int> Login(User user)
         {
             var internalUsers = Users.FindAll(x => x.Name == user.Name);
-            if (internalUsers.Count == 0)
-            {
-                CalculateEarnings();
+            if (internalUsers.Count == 0)            
                 return CreateUser(user);
-            }
-
-
+            
             foreach (var internalUser in internalUsers)
-                if (user.Passwort == internalUser.Passwort)
-                {
-                    CalculateEarnings();
-                    return internalUser.uId;
-                }
-
-            CalculateEarnings();
+                if (user.Passwort == internalUser.Passwort)                
+                    return internalUser.uId;                
 
             return CreateUser(user);
         }
@@ -72,8 +63,6 @@ namespace WebApi.Controllers
                 Times.Add(time);
             }
 
-            CalculateEarnings();
-
             return Ok();
         }
 
@@ -84,10 +73,12 @@ namespace WebApi.Controllers
             return new List<string> { "Projekt 1", "Projekt 2", "Projekt 3", "Projekt 4", "Projekt 5" };
         }
 
-        private void CalculateEarnings()
+        [HttpGet("CalculateEarnings")]
+        [ProducesResponseType(typeof(decimal), 200)]
+        public decimal CalculateEarnings(int id)
         {
-            var result = new ConcurrentDictionary<int, decimal>();
-            //var callback = OperationContext.Current.GetCallbackChannel<IDataCallback>();
+            decimal earning = 0;
+            var result = new ConcurrentDictionary<int, decimal>();            
 
             for (int i = 0; i < Times.Count; i++)
             {
@@ -102,13 +93,12 @@ namespace WebApi.Controllers
                 }
             }
 
-            foreach (var u in Users)
+            if (result.ContainsKey(id))
             {
-                if (result.ContainsKey(u.uId))
-                    result[u.uId] = result[u.uId] * 120;
+                earning = result[id] * 120;                
             }
 
-            //callback.EarningsCalculated(result);
+            return earning;
         }
     }
 

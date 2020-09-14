@@ -72,6 +72,7 @@ namespace DataInputt
                 timesListView.Items.Add(item);
             }
             TimeRepo.Times = timesList;
+            CalculateEarnings();
         }
 
                                         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -113,7 +114,8 @@ namespace DataInputt
                                             tb1.Text = String.Empty;
                                             projectsCombo.SelectedIndex = 0;
                                             tb5.Text = tb1.Text;
-                                        }
+            CalculateEarnings();
+        }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
@@ -137,12 +139,12 @@ namespace DataInputt
                 timesListView.Items.Add(item);
             }
             TimeRepo.Times = timesList;
+            CalculateEarnings();
         }
 
-        public void EarningsCalculated(Dictionary<int, decimal> earnings)
+        public void CalculateEarnings()
         {
-            var e = earnings.ContainsKey(userId) == true ? earnings[userId].ToString("C") : "0 €";
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => this.earnings.Text = e));
+            earnings.Text = client.CalculateEarnings(userId).ToString("C");
         }
     }
 

@@ -67,6 +67,16 @@ namespace DataInputt.ZeitService.Api
         /// <exception cref="ZeitServiceApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.List<string>> ProjectsAsync(System.Threading.CancellationToken cancellationToken);
     
+        /// <exception cref="ZeitServiceApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<decimal> CalculateEarningsAsync(int? id);
+    
+        /// <exception cref="ZeitServiceApiException">A server side error occurred.</exception>
+        decimal CalculateEarnings(int? id);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ZeitServiceApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<decimal> CalculateEarningsAsync(int? id, System.Threading.CancellationToken cancellationToken);
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.7.2.0 (NJsonSchema v10.1.26.0 (Newtonsoft.Json v12.0.0.0))")]
@@ -476,6 +486,87 @@ namespace DataInputt.ZeitService.Api
                         if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.List<string>>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ZeitServiceApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new ZeitServiceApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <exception cref="ZeitServiceApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<decimal> CalculateEarningsAsync(int? id)
+        {
+            return CalculateEarningsAsync(id, System.Threading.CancellationToken.None);
+        }
+    
+        /// <exception cref="ZeitServiceApiException">A server side error occurred.</exception>
+        public decimal CalculateEarnings(int? id)
+        {
+            return System.Threading.Tasks.Task.Run(async () => await CalculateEarningsAsync(id, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ZeitServiceApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<decimal> CalculateEarningsAsync(int? id, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/zeitservice/CalculateEarnings?");
+            if (id != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("id") + "=").Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = new System.Net.Http.HttpClient();
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<decimal>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ZeitServiceApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);

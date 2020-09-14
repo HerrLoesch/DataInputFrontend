@@ -15,17 +15,12 @@ namespace DataInputt.ZeitService
         void AddTime(Time time, int? userId);
 
         List<string> Projects();
+
+        decimal CalculateEarnings(int? id);
     }
 
     public class DataInputService : ZeitServiceClient, IDataInputService
     {
         
     }
-
-    public interface IDataCallback
-    {
-        void EarningsCalculated(IDictionary<int, decimal> earnings);
-    }
-
-    
 }
