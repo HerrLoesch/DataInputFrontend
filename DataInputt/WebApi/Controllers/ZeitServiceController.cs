@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using DataInputt.ZeitService.Api;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using WebApi.Hubs;
 
 namespace WebApi.Controllers
 {
@@ -15,6 +17,12 @@ namespace WebApi.Controllers
     {
         public static List<InternalUser> Users = new List<InternalUser>();
         public static List<Time> Times = new List<Time>();
+
+        private readonly IHubContext<EarningsHub> earningsHubContext;
+        public ZeitServiceController(IHubContext<EarningsHub> earningsHubContext)
+        {
+            this.earningsHubContext = earningsHubContext;
+        }
 
         [HttpPost("CreateUser")]
         [ProducesResponseType(typeof(int), 200)]
@@ -87,7 +95,6 @@ namespace WebApi.Controllers
         private void CalculateEarnings()
         {
             var result = new ConcurrentDictionary<int, decimal>();
-            //var callback = OperationContext.Current.GetCallbackChannel<IDataCallback>();
 
             for (int i = 0; i < Times.Count; i++)
             {
@@ -108,7 +115,7 @@ namespace WebApi.Controllers
                     result[u.uId] = result[u.uId] * 120;
             }
 
-            //callback.EarningsCalculated(result);
+            Task.Run(async () => await earningsHubContext.Clients.All.SendAsync("EarningsCalculated", result)).GetAwaiter().GetResult();
         }
     }
 

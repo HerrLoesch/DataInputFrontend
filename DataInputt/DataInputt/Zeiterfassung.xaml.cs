@@ -19,6 +19,7 @@ using System.ServiceModel;
 using System.Windows.Threading;
 using DataInputt.ZeitService;
 using DataInputt.ZeitService.Api;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace DataInputt
 {
@@ -27,6 +28,7 @@ namespace DataInputt
     /// </summary>    
     public partial class Zeiterfassung : Page
     {
+        private HubConnection connection;
         private IDataInputService client;
         private Delete delete;
         private int i = 1;
@@ -44,6 +46,9 @@ namespace DataInputt
             projectsCombo.ItemsSource = client.Projects();
             projectsCombo.SelectedIndex = 0;
 
+            connection = new HubConnectionBuilder().WithUrl("http://localhost:52841/Earnings").Build();
+            connection.On<Dictionary<int, decimal>>("EarningsCalculated", EarningsCalculated);
+            connection.StartAsync();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
