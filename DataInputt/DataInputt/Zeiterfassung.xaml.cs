@@ -1,5 +1,4 @@
-﻿using DataInputt.DataInputServiceReference;
-using DataInputt.Models;
+﻿using DataInputt.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,16 +17,17 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ServiceModel;
 using System.Windows.Threading;
+using DataInputt.ZeitService.Api;
+using DataInputt.Services;
 
 namespace DataInputt
 {
     /// <summary>
     /// Interaktionslogik für Projects.xaml
-    /// </summary>
-    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Single, UseSynchronizationContext = false)]
-    public partial class Zeiterfassung : Page, IDataInputServiceCallback
+    /// </summary>    
+    public partial class Zeiterfassung : Page
     {
-        private DataInputServiceClient client;
+        private IDataInputService client;
         private Delete delete;
         private int i = 1;
         private int userId = -1;
@@ -39,7 +39,7 @@ namespace DataInputt
         public Zeiterfassung()
         {
             InitializeComponent();
-            client = new DataInputServiceClient(new InstanceContext(this));
+            client = new DataInputService();
             delete = Delete.GetInstance();
             projectsCombo.ItemsSource = client.Projects();
             projectsCombo.SelectedIndex = 0;

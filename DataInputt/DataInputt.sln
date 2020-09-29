@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataInputt.Tests", "DataInp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfServer", "WcfServer\WcfServer.csproj", "{2CB74F1D-6A02-4EB1-BA08-04619E4EE86D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataInputt.ZeitService.Api", "DataInputt.ZeitService.Api\DataInputt.ZeitService.Api.csproj", "{A8BD5AA6-AD86-43EF-8E17-F2D3BBC8BCE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{2CB74F1D-6A02-4EB1-BA08-04619E4EE86D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CB74F1D-6A02-4EB1-BA08-04619E4EE86D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CB74F1D-6A02-4EB1-BA08-04619E4EE86D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8BD5AA6-AD86-43EF-8E17-F2D3BBC8BCE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8BD5AA6-AD86-43EF-8E17-F2D3BBC8BCE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8BD5AA6-AD86-43EF-8E17-F2D3BBC8BCE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8BD5AA6-AD86-43EF-8E17-F2D3BBC8BCE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
