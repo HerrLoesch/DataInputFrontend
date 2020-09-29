@@ -11,6 +11,7 @@ service ZeitService {
 	rpc GetTimes (GetTimesRequest) returns (TimeCollection) {}
 	rpc AddTime (AddTimeRequest) returns (google.protobuf.Empty) {}
 	rpc Projects (google.protobuf.Empty) returns (ProjectCollection) {}
+	rpc CalculateEarnings (CalculateEarningRequest) returns (CalculateEarningResponse) {}
 }
 
 
@@ -46,4 +47,12 @@ message AddTimeRequest {
 
 message ProjectCollection {
 	repeated string projects = 1;
+}
+
+message CalculateEarningRequest {
+	int32 userId = 1;
+}
+
+message CalculateEarningResponse {
+	float earning = 1;
 }

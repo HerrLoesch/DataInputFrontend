@@ -14,11 +14,8 @@ namespace DataInputt.ZeitService.Api
         void AddTime(Time time, int userId);
 
         List<string> Projects();
-    }
 
-    public interface IDataCallback
-    {
-        void EarningsCalculated(IDictionary<int, decimal> earnings);
+        decimal CalculateEarnings(int? id);
     }
 
     public class User

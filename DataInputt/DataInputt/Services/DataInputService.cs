@@ -24,6 +24,11 @@ namespace DataInputt.Services
             _grpcClient.AddTime(new AddTimeRequest { UserId = userId, Time = time.ToTimeDto() });
         }
 
+        public decimal CalculateEarnings(int? id)
+        {
+            return (decimal)_grpcClient.CalculateEarnings(new CalculateEarningRequest { UserId = id.GetValueOrDefault(0) }).Earning;
+        }
+
         public int CreateUser(User user)
         {
             return _grpcClient.CreateUser(user.ToUserDto()).Id;

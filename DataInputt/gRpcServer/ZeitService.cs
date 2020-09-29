@@ -1,6 +1,8 @@
 ﻿using DataInputt.ZeitService.Api;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -66,6 +68,32 @@ namespace gRpcServer
             var response = new ProjectCollection();
             response.Projects.AddRange(new[] { "Projekt 1", "Projekt 2", "Projekt 3", "Projekt 4", "Projekt 5" });
             return Task.FromResult(response);
+        }
+
+        public override Task<CalculateEarningResponse> CalculateEarnings(CalculateEarningRequest request, ServerCallContext context)
+        {
+            float earning = 0;
+            var result = new ConcurrentDictionary<int, decimal>();
+
+            for (int i = 0; i < Times.Count; i++)
+            {
+                var t = Times[i];
+                if (result.ContainsKey(t.uId) == true)
+                {
+                    result[t.uId] += Convert.ToDecimal((t.End - t.Start).TotalHours);
+                }
+                else
+                {
+                    result.TryAdd(t.uId, Convert.ToDecimal((t.End - t.Start).TotalHours));
+                }
+            }
+
+            if (result.ContainsKey(request.UserId))
+            {
+                earning = (float)result[request.UserId] * 120;
+            }
+
+            return Task.FromResult(new CalculateEarningResponse { Earning = earning });
         }
 
         public class InternalUser : User
