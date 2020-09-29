@@ -908,7 +908,7 @@ namespace DataInputt
         {
             using (var db = new DataContext())
             {
-                db.Database.Delete();
+                db.Database.EnsureDeleted();
                 foreach (Publication p in this.publikationen.Items)
                 {
                     //Console.WriteLine(p.Id + " " + p.Name);
