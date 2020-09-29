@@ -1,0 +1,58 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/Empty.proto";
+
+option csharp_namespace = "DataInputt.ZeitService.Api";
+
+service ZeitService {
+	rpc CreateUser (UserDto) returns (UserResponse) {}
+	rpc Login (UserDto) returns (UserResponse) {}
+	rpc GetTimes (GetTimesRequest) returns (TimeCollection) {}
+	rpc AddTime (AddTimeRequest) returns (google.protobuf.Empty) {}
+	rpc Projects (google.protobuf.Empty) returns (ProjectCollection) {}
+	rpc CalculateEarnings (CalculateEarningRequest) returns (CalculateEarningResponse) {}
+}
+
+
+message UserDto {
+	string name = 1;
+	string passwort = 2;
+}
+
+message TimeDto {
+	google.protobuf.Timestamp start = 1;
+	google.protobuf.Timestamp end = 2;
+	string project = 3;
+	int32 uid = 4;
+	int32 id = 5;
+}
+
+message UserResponse {
+	int32 id = 1;
+}
+
+message GetTimesRequest {
+	int32 userId = 1;
+}
+
+message TimeCollection {
+	repeated TimeDto times = 1;
+}
+
+message AddTimeRequest {
+	TimeDto time = 1;
+	int32 userId = 2;
+}
+
+message ProjectCollection {
+	repeated string projects = 1;
+}
+
+message CalculateEarningRequest {
+	int32 userId = 1;
+}
+
+message CalculateEarningResponse {
+	float earning = 1;
+}
