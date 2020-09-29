@@ -12,6 +12,7 @@ namespace gRpcServer
 
             Server server = new Server
             {
+                Services = { DataInputt.ZeitService.Api.ZeitService.BindService(new ZeitService()) },
                 Ports = { new ServerPort(host, port, ServerCredentials.Insecure) }
             };
             server.Start();
